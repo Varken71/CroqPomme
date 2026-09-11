@@ -1,34 +1,49 @@
 {
+  "id": "./",
   "name": "Croq'Pomme - Lili & Madame Girafe",
   "short_name": "Croq'Pomme",
-  "description": "Maia 1 an, Madame Girafe dit qu'elle s'amuse bien ! Lion Roooaar - scroll fixe",
-  "start_url": "./index.html",
+  "description": "Maia 1 an, Madame Girafe dit qu'elle s'amuse bien ! Jeu lion girafe",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "browser"
+  ],
   "background_color": "#FFF8E7",
   "theme_color": "#2D3250",
-  "orientation": "any",
+  "orientation": "portrait",
+  "launch_handler": {
+    "client_mode": [
+      "navigate-existing",
+      "auto"
+    ]
+  },
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "./icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "./icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-180.png",
+      "src": "./icons/icon-180.png",
       "sizes": "180x180",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "icons/icon-32.png",
+      "src": "./icons/icon-32.png",
       "sizes": "32x32",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#2D3250">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Croq Pomme">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
-  <meta name="description" content="Croq'Pomme - L'enquete de Lili Bellecuisse. Maia 1 an, Madame Girafe dit qu'elle s'amuse bien ! Jeu cozy lion girafe - scroll fixe">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png">
+  <meta name="description" content="Croq'Pomme - L'enquete de Lili. Maia 1 an, Madame Girafe dit qu'elle s'amuse bien !">
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,11 +48,38 @@ Error generating stack: `+u.message+`
   
 
 <script>
+// Service Worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').then(r=>console.log('SW ok')).catch(e=>console.log(e));
+    navigator.serviceWorker.register('./sw.js', {scope: './'})
+      .then(r => console.log('SW ok', r.scope))
+      .catch(e => console.error('SW fail', e));
   });
 }
+// Android install prompt helper
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('Install prompt ready');
+  const btn = document.getElementById('android-install-btn');
+  if(btn) btn.style.display = 'flex';
+});
+function installPWA() {
+  if(deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r => {
+      console.log('Install choice', r.outcome);
+      deferredPrompt = null;
+    });
+  } else {
+    alert("Pour installer : Menu Chrome (3 points) > Ajouter à l'écran d'accueil ou Installer l'application. Il faut être sur le lien GitHub en https, pas sur le preview Meta AI.");
+  }
+}
 </script>
+<style>
+#android-install-btn{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;background:#2D3250;color:white;padding:14px 22px;border-radius:999px;font-family:Fredoka,sans-serif;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.25);gap:8px;align-items:center;cursor:pointer;border:2px solid white}
+</style>
+<button id="android-install-btn" onclick="installPWA()">📲 Installer Croq'Pomme</button>
 </body>
 </html>
